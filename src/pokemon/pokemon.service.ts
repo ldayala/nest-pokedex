@@ -64,7 +64,7 @@ export class PokemonService {
     if (deletedCount===0) {
       throw new BadRequestException(`not fount a pokemon with this id: ${id}`)
     }
-    return;    
+    return;     
   }
 
   private handleExceptions(error:any){
