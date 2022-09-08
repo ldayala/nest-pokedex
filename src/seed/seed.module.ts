@@ -4,6 +4,7 @@ import { SeedController } from './seed.controller';
 import { CommonModule } from './../common/common.module';
 import { PokemonModule } from '../pokemon/pokemon.module';
 
+
 @Module({
   controllers: [SeedController],
   providers: [SeedService],

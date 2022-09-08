@@ -8,6 +8,10 @@ async function bootstrap() {
     new ValidationPipe({
     whitelist: true,
     forbidNonWhitelisted: true,
+    transform:true,// esta opcion y la siguiente es para que nos transforme automaticamente los parametros de los dto
+    transformOptions:{
+      enableImplicitConversion:true
+    }
     })
    )
   app.setGlobalPrefix('api/v2')//para ponerle un f¡prefijo global a las endpoint

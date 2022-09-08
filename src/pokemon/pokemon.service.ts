@@ -5,6 +5,7 @@ import { PokeResponse } from 'src/seed/interfaces/poke-respo.interface';
 import { CreatePokemonDto } from './dto/create-pokemon.dto';
 import { UpdatePokemonDto } from './dto/update-pokemon.dto';
 import { Pokemon } from './entities/pokemon.entity';
+import { PaginationDto } from '../common/dto/pagination.dto';
 
 @Injectable()
 export class PokemonService {
@@ -23,8 +24,18 @@ export class PokemonService {
     }
   }
 
-  findAll() {
-    return `This action returns all pokemon`;
+  async findAll(paginationDto: PaginationDto) {
+    const { limit=10, offset=0 } = paginationDto
+    return await this.pokemonModel.find()
+      .limit(limit)
+      .skip(offset)
+      .sort({
+        no:'asc'
+      })
+      .select('-__v' )// para que no muestre el campo __v
+
+
+
   }
 
   async findOne(term: string) {
@@ -54,21 +65,21 @@ export class PokemonService {
       await pokemon.updateOne(updatePokemonDto, { new: true })
       return { ...pokemon.toJSON(), ...updatePokemonDto };
     } catch (error) {
-     this.handleExceptions(error)
+      this.handleExceptions(error)
     }
   }
 
   async remove(id: string) {
     //const pokemonDelete= await this.findOne(id)
     //await pokemonDelete.deleteOne()
-    const {deletedCount}= await this.pokemonModel.deleteOne({_id:id})
-    if (deletedCount===0) {
+    const { deletedCount } = await this.pokemonModel.deleteOne({ _id: id })
+    if (deletedCount === 0) {
       throw new BadRequestException(`not fount a pokemon with this id: ${id}`)
     }
-    return;     
+    return;
   }
 
-  private handleExceptions(error:any){
+  private handleExceptions(error: any) {
     if (error.code === 11000) {
       throw new BadRequestException(`Pokemon exits in db ${JSON.stringify(error.keyValue)}`)
     }
@@ -76,5 +87,5 @@ export class PokemonService {
     throw new InternalServerErrorException(`Can't create pokemon - check server logs`)
   }
 
-  
+
 }

@@ -13,12 +13,8 @@ import { Pokemon, PokemonSchema } from './entities/pokemon.entity';
       schema:PokemonSchema}
   ])],
   exports:[
-    MongooseModule.forFeature([
-      {
-        name:Pokemon.name, //este name es una propiedad heredada porque extiende de Document
-        schema:PokemonSchema}
-    ]),
-    PokemonService
+    MongooseModule,
+    
   ]
 })
 export class PokemonModule {}
